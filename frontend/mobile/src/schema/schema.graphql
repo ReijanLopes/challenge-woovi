@@ -1,0 +1,128 @@
+type User {
+  _id: ID
+  name: String
+  email: String
+  status: String
+  cards: [Card]
+  debts: [Debt]
+  createdAt: String
+  updatedAt: String
+}
+
+type Card {
+  _id: ID
+  name: String
+  number: String
+  cpf: String
+  expiration: String
+  cvv: Int
+  status: String
+  debts: Debt
+  createdAt: String
+  updatedAt: String
+}
+
+type Installments {
+  status: String
+  idMonth: Int
+  value: Float
+  expires: Int
+}
+
+type Debt {
+  _id: ID
+  value: Float
+  tax: Tax
+  cashback: Float
+  numberOfInstallments: Int
+  totalValue: Float
+  installments: [Installments]
+  user: User
+  card: Card
+  createdAt: String
+  updatedAt: String
+}
+
+type Tax {
+  cet: Float
+  type: String
+  value: Float
+  createdAt: String
+  updatedAt: String
+}
+
+input CardInput {
+  _id: ID
+  name: String
+  number: String
+  cpf: String
+  expiration: String
+  cvv: Int
+  status: String
+  user: ID
+  debts: ID
+  installment: String
+  createdAt: String
+  updatedAt: String
+}
+
+input UserInput {
+  _id: ID
+  name: String
+  email: String
+  status: String
+  cards: [ID]
+  debts: [ID]
+  createdAt: String
+  updatedAt: String
+}
+
+input InstallmentsInput {
+  status: String
+  idMonth: Int
+  value: Float
+  expires: String
+}
+
+input DebtInput {
+  _id: ID
+  value: Float
+  tax: Float
+  cashback: Float
+  numberOfInstallments: Int
+  totalValue: Float
+  installments: [InstallmentsInput]
+  cet: Float
+  tax: Float
+  user: ID
+  card: ID
+  createdAt: String
+  updatedAt: String
+}
+
+type Query {
+  getUser(id: ID!): User
+  getCard(id: ID!): Card
+  getDebt(id: ID!): Debt
+  getTax(id: ID!): Tax
+  listUser: [User]
+  listCard(id: ID!): [Card]
+  listDebt(id: ID!): [Debt]
+  listTax(id: ID!): [Tax]
+}
+
+type Mutation {
+  createUser(input: UserInput): User
+  createDebt(input: DebtInput): Debt
+  updateUser(input: UserInput): User
+  updateDebt(input: DebtInput): Debt
+  mutateCard(input: CardInput): Card
+  deleteUser(id: ID!): Boolean
+  deleteCard(id: ID!): Boolean
+  deleteDebt(id: ID!): Boolean
+}
+
+type Subscription {
+  userAdded: User
+  cardAdded: Card
+}
